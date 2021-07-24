@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.von.breakout">
 
+    <!-- Tell the system this app requires OpenGL ES 3.0. -->
+    <uses-feature
+        android:glEsVersion="0x00030000"
+        android:required="true" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -13,7 +18,7 @@
         <activity
             android:name=".OpenGLNativeActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:label="HelloTriangle"
+            android:label="BreakOut"
             android:launchMode="singleTask"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <meta-data

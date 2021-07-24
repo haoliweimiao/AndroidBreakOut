@@ -77,9 +77,9 @@ Texture2D ResourceManager::loadTextureFromFile(const ESContext *esContext, const
 
     // load image, create texture and generate mipmaps
     int width, height, nrChannels;
+    // tell stb_image.h not to flip loaded texture's on the y-axis.
     stbi_set_flip_vertically_on_load(
-            true); // tell stb_image.h to flip loaded texture's on the y-axis.
-    // The FileSystem::getPath(...) is part of the GitHub repository so we can find files on any IDE/platform; replace it with your own image path.
+            false);
 
     // 打开 Asset 文件夹下的文件
     AAsset *pathAsset = AAssetManager_open((AAssetManager *) esContext->assetManager, file,

@@ -48,15 +48,14 @@ include_directories(Common/Include)
 include_directories(stb_image)
 include_directories(glm)
 
+file(GLOB SOURCES
+        *.cpp
+        *.c)
+
 add_library(
         BreakOut
         SHARED
-        LinkUtil.c
-        Game.cpp
-        ResourceManager.cpp
-        ShaderManager.cpp
-        Texture.cpp
-        BreakOutMain.cpp)
+        ${SOURCES})
 
 find_library(
         log-lib

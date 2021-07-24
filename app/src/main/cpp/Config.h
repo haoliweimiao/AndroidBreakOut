@@ -12,8 +12,11 @@
 extern "C"
 {
 #endif
-    // your code
-#define PROGRAM_NAME_TEST "test"
+// your code
+#define PROGRAM_NAME_SPRITE "sprite"
+#define SPRITE_TEXTURE_NAME_FACE "face"
+#define SPRITE_UNIFORM_NAME_IMAGE "image"
+#define SPRITE_UNIFORM_NAME_PROJECTION "projection"
 
 #ifdef __cplusplus
 }

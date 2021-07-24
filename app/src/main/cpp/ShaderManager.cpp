@@ -16,7 +16,7 @@ Shader &Shader::Use() {
 }
 
 void Shader::Compile(const GLchar *vertexSource, const GLchar *fragmentSource) {
-    GLuint sVertex, sFragment, gShader;
+    GLuint sVertex, sFragment;
     // Vertex Shader
     sVertex = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(sVertex, 1, &vertexSource, NULL);
@@ -102,17 +102,16 @@ void Shader::checkCompileErrors(GLuint object, std::string type) {
         glGetShaderiv(object, GL_COMPILE_STATUS, &success);
         if (!success) {
             glGetShaderInfoLog(object, 1024, NULL, infoLog);
-            std::cout << "| ERROR::SHADER: Compile-time error: Type: " << type << "\n"
-                      << infoLog << "\n -- --------------------------------------------------- -- "
-                      << std::endl;
+            esLogMessage("| ERROR::SHADER: Compile-time error: Type: %s\n%s", type.c_str(),
+                         infoLog);
+
         }
     } else {
         glGetProgramiv(object, GL_LINK_STATUS, &success);
         if (!success) {
             glGetProgramInfoLog(object, 1024, NULL, infoLog);
-            std::cout << "| ERROR::Shader: Link-time error: Type: " << type << "\n"
-                      << infoLog << "\n -- --------------------------------------------------- -- "
-                      << std::endl;
+            esLogMessage("| ERROR::Shader: Link-time error: Type: %s\n%s", type.c_str(),
+                         infoLog);
         }
     }
 }

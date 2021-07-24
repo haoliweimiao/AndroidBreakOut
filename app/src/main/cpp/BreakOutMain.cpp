@@ -11,13 +11,26 @@ typedef struct {
     Game mGame;
 } UserData;
 
+// DeltaTime variables
+GLfloat deltaTime = 0.0f;
+GLfloat lastFrame = 0.0f;
+
 ///
 // Initialize the shader and program object
 //
 int Init(ESContext *esContext) {
     auto *userData = (UserData *) esContext->userData;
     userData->mGame.Init();
+
+    // Start Game within Menu State
+    userData->mGame.State = GAME_ACTIVE;
     return TRUE;
+}
+
+void Update(ESContext *esContext, float deltaTime) {
+    auto *userData = (UserData *) esContext->userData;
+    userData->mGame.ProcessInput(deltaTime);
+    userData->mGame.Update(deltaTime);
 }
 
 ///
@@ -47,6 +60,7 @@ int esMain(ESContext *esContext) {
 
     esRegisterShutdownFunc(esContext, Shutdown);
     esRegisterDrawFunc(esContext, Draw);
+    esRegisterUpdateFunc(esContext, Update);
 
     return GL_TRUE;
 }

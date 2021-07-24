@@ -4,6 +4,9 @@
 
 #include "Game.h"
 #include "Config.h"
+#include "SpriteRenderer.h"
+
+SpriteRenderer *Renderer;
 
 Game::Game(ESContext esContext)
         : State(GAME_ACTIVE), Keys(), Context(esContext), Width(esContext.width),
@@ -19,8 +22,25 @@ void Game::Init() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    ResourceManager::LoadShader(&this->Context, "demo_triangle_vertex.glsl",
-                                "demo_triangle_fragment.glsl", PROGRAM_NAME_TEST);
+    ESContext *esContext = &this->Context;
+
+    // 加载着色器
+    ResourceManager::LoadShader(esContext,
+                                "glsl/sprite.vert",
+                                "glsl/sprite.frag",
+                                PROGRAM_NAME_SPRITE);
+
+    Shader spriteShader = ResourceManager::GetShader(PROGRAM_NAME_SPRITE);
+    // 配置着色器
+    glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(this->Width),
+                                      static_cast<GLfloat>(this->Height), 0.0f, -1.0f, 1.0f);
+    spriteShader.Use().SetInteger(SPRITE_UNIFORM_NAME_IMAGE, 0);
+    spriteShader.SetMatrix4(SPRITE_UNIFORM_NAME_PROJECTION, projection);
+    // 设置专用于渲染的控制
+    Renderer = new SpriteRenderer(spriteShader);
+    // 加载纹理
+    ResourceManager::LoadTexture(esContext, "textures/awesomeface.png", GL_TRUE,
+                                 SPRITE_TEXTURE_NAME_FACE);
 
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
 }
@@ -35,26 +55,9 @@ void Game::ProcessInput(GLfloat dt) {
 }
 
 void Game::Render() {
-    GLfloat vVertices[] = {0.0f, 0.5f, 0.0f,
-                           -0.5f, -0.5f, 0.0f,
-                           0.5f, -0.5f, 0.0f
-    };
-
-    // Set the viewport
-    glViewport(0, 0, Width, Height);
-
-    // Clear the color buffer
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    GLint programObject = ResourceManager::GetShader(PROGRAM_NAME_TEST).ID;
-    // Use the program object
-    glUseProgram(programObject);
-
-    // Load the vertex data
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, vVertices);
-    glEnableVertexAttribArray(0);
-
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    Renderer->DrawSprite(ResourceManager::GetTexture(SPRITE_TEXTURE_NAME_FACE),
+                         glm::vec2(200, 200), glm::vec2(300, 400), 45.0f,
+                         glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void Game::Destroy() {
