@@ -30,6 +30,7 @@ SET(CMAKE_SYSTEM_PROCESSOR arm)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -fno-rtti -fno-exceptions -Wall")
+set(CMAKE_CXX_STANDARD 11)
 
 if (${ANDROID_PLATFORM_LEVEL} LESS 12)
     message(FATAL_ERROR "OpenGL 2 is not supported before API level 11 \
@@ -51,6 +52,10 @@ add_library(
         BreakOut
         SHARED
         LinkUtil.c
+        Game.cpp
+        ResourceManager.cpp
+        ShaderManager.cpp
+        Texture.cpp
         BreakOutMain.cpp)
 
 find_library(

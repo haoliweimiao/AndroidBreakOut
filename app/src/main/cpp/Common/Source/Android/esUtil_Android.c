@@ -45,9 +45,6 @@
 #include "esUtil.h"
 #include "esConstants.h"
 
-#define LOGI(...) ((void)__android_log_print(ANDROID_LOG_INFO, "esUtil", __VA_ARGS__))
-
-
 //////////////////////////////////////////////////////////////////
 //
 //  Private Functions
@@ -131,10 +128,12 @@ static void HandleCommand(struct android_app *pApp, int32_t cmd) {
 static int32_t android_key_event(struct android_app *app, AInputEvent *event) {
     if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_KEY) {
         int32_t key_val = AKeyEvent_getKeyCode(event);
-        LOGI("Received key event: %d\n", key_val);
+        esLogMessage("Received key event: %d\n", key_val);
         if ((key_val >= AKEYCODE_A && key_val <= AKEYCODE_Z)) {
             ESContext *esContext = (ESContext *) app->userData;
-            esContext->keyFunc(esContext, (int) key_val, 0, 0);
+            if (esContext->keyFunc != NULL) {
+                esContext->keyFunc(esContext, (int) key_val, 0, 0);
+            }
             return ANDROID_KEY_EVENT_HANDLED;
         }
     }
