@@ -129,10 +129,12 @@ static int32_t android_key_event(struct android_app *app, AInputEvent *event) {
     if (AInputEvent_getType(event) == AINPUT_EVENT_TYPE_KEY) {
         int32_t key_val = AKeyEvent_getKeyCode(event);
         esLogMessage("Received key event: %d\n", key_val);
-        if ((key_val >= AKEYCODE_A && key_val <= AKEYCODE_Z)) {
+        if ((key_val >= AKEYCODE_A && key_val <= AKEYCODE_SPACE)) {
             ESContext *esContext = (ESContext *) app->userData;
             if (esContext->keyFunc != NULL) {
-                esContext->keyFunc(esContext, (int) key_val, 0, 0);
+                int32_t action = AKeyEvent_getAction(event);
+                int32_t flags = AKeyEvent_getFlags(event);
+                esContext->keyFunc(esContext, (int) key_val, action, flags);
             }
             return ANDROID_KEY_EVENT_HANDLED;
         }

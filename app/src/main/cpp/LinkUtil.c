@@ -13,6 +13,7 @@ char *getAssetsFile(AAssetManager *mgr, const char *filename) {
     AAsset *assetFile = AAssetManager_open(mgr, filename, AASSET_MODE_BUFFER);
     //get file length
     size_t fileLength = (size_t) AAsset_getLength(assetFile);
+    // todo not recycler fileData, need input in param and recycler
     char *fileData = (char *) malloc(fileLength + 1);
     fileData[fileLength] = 0;
     //read file data

@@ -297,7 +297,7 @@ void ESUTIL_API esLogMessage ( const char *formatStr, ... )
    vsprintf ( buf, formatStr, params );
 
 #ifdef ANDROID
-   __android_log_print ( ANDROID_LOG_INFO, "esUtil" , "%s", buf );
+   __android_log_print ( ANDROID_LOG_INFO, "BreakOut" , "%s", buf );
 #else
    printf ( "%s", buf );
 #endif
